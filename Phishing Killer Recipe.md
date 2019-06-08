@@ -29,7 +29,7 @@ We will need:
 	 - Enrich web gateway logs with a boolean value (phishy) populated based on the identification of the text "@your.domain" in the request body. This will be an indicator that user credentials may have been leaked.
 	 - Create the capability of monitoring the links opened through email. Couple of ways to achieve this:
 		 - Asynchronously: Enrich email gateway logs to include the urls found in the emails (let's call this field eurl).
-		 - Synchronously: Create a rule on email gateway that will append something unique like: "/sandbox-static-guid" in every link found in emails. Upon receiving such link, the proxy will be configured to strip the extra path in the url and redirect the user to the original link.
+		 - Synchronously: Create a rule on email gateway that will append (or prepend, i.e. domain) something unique like: "/sandbox-static-guid" in every link found in emails, essentially adding them a signature. Then if that signature is found in the proxy logs, it should be safe to assume that the session originated from an email and the proxy can redirect the user to the original link. 
          > Asynchronous capability will normally be easier to deploy, and probably be available out of the box with url reputation check. The Synchronous capability on the other hand may need some careful planning before deployment, since except from the fact that it requires the modification of the message body (so breaking potential digital signatures), its functionality depends on the presence of a "collaborating" web gateway, which might not be always the case. (e.g. maybe when a user is connected through WiFi)
      - With asynchronous email link monitoring:    
 		 - Create a correlation rule using the new proxy field, phishy, with the eurl and pop an alert when the domains match. 
@@ -40,7 +40,7 @@ We will need:
 		 - Create a correlation rule that will be activated when an email link is clicked and within 5 minutes, there is navigation to "suspicious" resources (e.g. compressed files, documents). (medium false-positive, can be calibrated)
          > Note: Here we don't have the complications of the asynchronous mode since we know exactly when a link from an email is clicked. This of course comes at the cost of being more "invasive" in detecting the links.
          > 
-         > Additionally, in the synchronous mode, we could go beyond detection and with the help of the Web Gateway enable prevention. This can be achieved by setting up stricter rules to be applied on a session, when is detected to originate from an email. (e.g. prevent users submitting data/credentials, block file downloading).
+         > Additionally, in the synchronous mode, we could go beyond detection and with the help of the Web Gateway enable prevention. This can be achieved by setting up stricter rules to be applied on a session, when is detected to originate from an email. (e.g. prevent users submitting data/credentials, block file downloading, or just apply speargun #2).
  5. Spearfisherman: maintains and operates all the above, may catch an octopus occasionally by himself but to be effective he needs his tools
 	 - Simulated phishing campaigns
 
