@@ -8,8 +8,8 @@ We will need:
 
  1. Speargun: can kill φish(ing), at least certain species of it
 	 - Mark externally received emails. (e.g. prepend a message on subject or body)
-	 	- On Subject it could be a simple: "EXTERNAL:"
-		- On Email body, the message should be concise, self-explanatory, clearly visible (maybe some nice red highlighted text), and you should avoid including reduntant statements. For example if you utilize applocker with good coverage with macros disabled on office or maybe an endpoint sandbox solution, then you probably don't care much whether users click links/download files/execute attachments.
+	 	- On Subject you could prepend the text: "EXTERNAL:"
+		- On Email body, the message should be concise, self-explanatory, clearly visible (maybe some nice red highlighted text), and you should avoid including reduntant statements. For example if you utilize applocker (properly configured) with macros disabled on office or maybe an endpoint sandbox solution, then you probably don't care much whether users click links/download files/execute attachments.
 		> Note: You may want to check with your legal/marketing departments on modifying received emails. Another consideration is the validity of digital signatures, especially after changing email body.
 	 - Awareness training on what that prepended message means
 	 > In most of the situations, before the user falls into the phishing trap, there is a moment of doubt/confusion created by the contents of the email (e.g. asking the user to do something unusual). You want your users in that exact moment, to have clear instructions on how they should react. They should create a connection that when in doubt+that red annoying line at the beginning of the email=notify security (ingredient [5] should help with forging that equation into their minds)
