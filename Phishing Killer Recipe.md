@@ -39,7 +39,7 @@ We will need:
             > Finally, a word of caution, the logging of command line arguments could reveal sensitive information in some instances.
             > 
             > An alternative solution without any of the shortcomings described above is to configure sysmon. The only drawback is the effort that would take to set it up at the beginning.
-            - Create a rule on email gateway that will append (or prepend, i.e. domain) something unique like: "/sandbox-static-guid" in every link found in emails, essentially adding them a signature. Then if that signature is found in the proxy logs, it should be safe to assume that the session originated from an email.
+            - Create a rule on email gateway that will append (or prepend, i.e. domain) something unique like: "/sandbox-static-guid" in every link found in emails, essentially adding them a signature. Then if that signature is found in the proxy logs, it should be safe to assume that the session originated from an email. (of course the proxy will then have to redirect the user to the original link)
             > Truly synchronous, but careful planning will be required before deployment. Other than modifying the email body (so breaking potential digital signatures), its functionality depends on the presence of a "collaborating" web gateway, which might not be always the case. (e.g. maybe when a user is connected through WiFi)
      - With asynchronous email link monitoring:    
 		 - Create a correlation rule using the new proxy field, phishy, and pop an alert when its domain is found within an email. 
@@ -54,7 +54,7 @@ We will need:
  5. Spearfisherman: maintains and operates all the above, may catch an octopus occasionally by himself but to be effective he needs his tools
 	 - Simulated phishing campaigns
 
-Water: email source verification (e.g. dmarc), antivirus scan, attachment extension blacklist/whitelist, maybe some threat emulation and html sanitization
+Water: email source verification (e.g. dmarc), antivirus scan, attachment extension blacklist/whitelist, maybe some threat emulation and html sanitization (the controls here are supposed to be applied on email gateway)
 
 ## Execution
 
