@@ -34,8 +34,13 @@ We will need:
 		 - Synchronously: 
             - Create a rule on email gateway that will append (or prepend, i.e. domain) something unique like: "/sandbox-static-guid" in every link found in emails, essentially adding them a signature. Then if that signature is found in the proxy logs, it should be safe to assume that the session originated from an email.
             > Careful planning will be required before deployment. Other than modifying the email body (so breaking potential digital signatures), its functionality depends on the presence of a "collaborating" web gateway, which might not be always the case. (e.g. maybe when a user is connected through WiFi)
-			- sysmon/EDR, through process creation event (relevant fields: process image, parent process image, process arguments)
-            > Ok, almost synchronous, but to the point that allow us to reap most of the benefits of synchronous monitoring. It will also take some effort to set up sysmon in case is not already installed/configured.
+			- Specifically for Windows, monitor the [process creation event](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=4688). When a link from an email is clicked, a new process of the default internet browser will be created and the url will be passed as an argument.
+            > Ok, almost synchronous, but to the point that allow us to reap most of the benefits of synchronous monitoring.
+            > 
+            > It should be noted that the process creation event logging is disabled by default as well as the logging of command line arguments. Both should be enabled to have this going. One limitation is that the parent process image is not included in the logs (just its pid), so it would be hard to tell for example when a link was clicked through outlook. 
+            > Finally, a word of caution, the logging of command line arguments could reveal sensitive information in some instances.
+            > 
+            > An alternative solution without any of the shortcomings described above is to configure sysmon. The only drawback is the effort that would take to set it up at the beginning.
      - With asynchronous email link monitoring:    
 		 - Create a correlation rule using the new proxy field, phishy, and pop an alert when its domain is found within an email. 
 		 - Create a correlation rule based on the navigation to resources (e.g. compressed files, documents) from the web gateway when the domain matches one from an email. (medium false-positive, can be calibrated)
@@ -45,7 +50,7 @@ We will need:
 		 - Create a correlation rule that will be activated when an email link is clicked and within 5 minutes, there is navigation to "suspicious" resources (e.g. compressed files, documents). (medium false-positive, can be calibrated)
          > Note: Here we don't have the complications of the asynchronous mode since we know fairly well when a link from an email is clicked.
          > 
-         > Additionally, with synchronous mode #1, we could go beyond detection and with the help of the Web Gateway enable prevention. This can be achieved by setting up stricter rules to be applied on a session, when is detected to originate from an email. (e.g. prevent users submitting data/credentials, block file downloading, or just apply speargun #2).
+         > Additionally, with the appended "signature" synchronous mode, we could go beyond detection and with the help of the Web Gateway enable prevention. This can be achieved by setting up stricter rules to be applied on a session, when is detected to originate from an email. (e.g. prevent users submitting data/credentials, block file downloading, or just apply the red (frame) speargum).
  5. Spearfisherman: maintains and operates all the above, may catch an octopus occasionally by himself but to be effective he needs his tools
 	 - Simulated phishing campaigns
 
