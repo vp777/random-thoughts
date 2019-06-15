@@ -35,11 +35,11 @@ We will need:
             - Create a rule on email gateway that will append (or prepend, i.e. domain) something unique like: "/sandbox-static-guid" in every link found in emails, essentially adding them a signature. Then if that signature is found in the proxy logs, it should be safe to assume that the session originated from an email.
             > Careful planning will be required before deployment. Other than modifying the email body (so breaking potential digital signatures), its functionality depends on the presence of a "collaborating" web gateway, which might not be always the case. (e.g. maybe when a user is connected through WiFi)
 			- sysmon/EDR, through process creation event (relevant fields: process image, parent process image, process arguments)
-            > Ok, almost synchronous, but to the point that allow us to reap most of the benefits of syncronous monitoring. It will also take some effort to set up sysmon in case is not already installed/configured.
+            > Ok, almost synchronous, but to the point that allow us to reap most of the benefits of synchronous monitoring. It will also take some effort to set up sysmon in case is not already installed/configured.
      - With asynchronous email link monitoring:    
 		 - Create a correlation rule using the new proxy field, phishy, and pop an alert when its domain is found within an email. 
 		 - Create a correlation rule based on the navigation to resources (e.g. compressed files, documents) from the web gateway when the domain matches one from an email. (medium false-positive, can be calibrated)
-         > Note: Before building these correlations you should take into consideration the asynchronous nature of our email detection capability.  For example, there could be considerable amount of time difference between the point an email is sent and the point it's actually read. (e.g. an email sent on Saturday is likely to be read on Monday).
+         > Note: Before building these correlations you should take into consideration the asynchronous nature of our link from email detection capability.  For example, there could be considerable amount of time difference between the point an email is sent and the point it's actually read. (e.g. an email sent on Saturday is likely to be read on Monday).
 	 - With synchronous email link monitoring:
 		 - Create a correlation rule that will be activated when an email link is clicked and within 5 minutes, a phishy url is detected.
 		 - Create a correlation rule that will be activated when an email link is clicked and within 5 minutes, there is navigation to "suspicious" resources (e.g. compressed files, documents). (medium false-positive, can be calibrated)
@@ -69,5 +69,5 @@ For further enhancement of the taste, and when the price (not only money) is not
  
 On the end point:
  1. applocker. When properly configured,  it will considerably decrease the likelihood of malware infection
- 2. sysmon/EDR. By setting up the appropriate rules, it will decrease significantly the impact of malware infection (i.e. quick detection). It could also decrease the impact of credential theft. (e.g. assist in detection through the asynchronous email link capability described above)
+ 2. sysmon/EDR. By setting up the appropriate rules, it will decrease significantly the impact of malware infection (i.e. quick detection). It could also decrease the impact of credential theft. (e.g. assist in detection through the synchronous email link discovery capability described above)
  3. Sandbox for applications. A solution with capabilities similar to Sandboxie, can eliminate the impact of malware infection. It could also be a cheap substitute of a browser isolation solution.
