@@ -32,8 +32,6 @@ We will need:
             - Enrich email gateway logs to include a field with the urls found in the emails.
             > It should be easy to deploy, and it will probably be available out of the box in case url reputation check is enabled on email gw.
 		 - Synchronously: 
-            - Create a rule on email gateway that will append (or prepend, i.e. domain) something unique like: "/sandbox-static-guid" in every link found in emails, essentially adding them a signature. Then if that signature is found in the proxy logs, it should be safe to assume that the session originated from an email.
-            > Careful planning will be required before deployment. Other than modifying the email body (so breaking potential digital signatures), its functionality depends on the presence of a "collaborating" web gateway, which might not be always the case. (e.g. maybe when a user is connected through WiFi)
 			- Specifically for Windows, monitor the [process creation event](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=4688). When a link from an email is clicked, a new process of the default internet browser will be created and the url will be passed as an argument.
             > Ok, almost synchronous, but to the point that allow us to reap most of the benefits of synchronous monitoring.
             > 
@@ -41,6 +39,8 @@ We will need:
             > Finally, a word of caution, the logging of command line arguments could reveal sensitive information in some instances.
             > 
             > An alternative solution without any of the shortcomings described above is to configure sysmon. The only drawback is the effort that would take to set it up at the beginning.
+            - Create a rule on email gateway that will append (or prepend, i.e. domain) something unique like: "/sandbox-static-guid" in every link found in emails, essentially adding them a signature. Then if that signature is found in the proxy logs, it should be safe to assume that the session originated from an email.
+            > Truly synchronous, but careful planning will be required before deployment. Other than modifying the email body (so breaking potential digital signatures), its functionality depends on the presence of a "collaborating" web gateway, which might not be always the case. (e.g. maybe when a user is connected through WiFi)
      - With asynchronous email link monitoring:    
 		 - Create a correlation rule using the new proxy field, phishy, and pop an alert when its domain is found within an email. 
 		 - Create a correlation rule based on the navigation to resources (e.g. compressed files, documents) from the web gateway when the domain matches one from an email. (medium false-positive, can be calibrated)
