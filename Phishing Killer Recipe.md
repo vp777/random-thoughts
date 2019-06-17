@@ -9,7 +9,7 @@ We will need:
  1. Speargun: can kill φish(ing), at least certain species of it
 	 - Mark externally received emails. (e.g. prepend a message on subject or body)
 	 	- On Subject you could prepend the text: "EXTERNAL:"
-		- On Email body, the message should be concise, self-explanatory, clearly visible (maybe some nice red highlighted text), and you should avoid including reduntant statements. For example if you utilize applocker (properly configured) with macros disabled on office or maybe an endpoint sandbox solution, then you probably don't care much whether users click links/download files/execute attachments.
+		- On Email body, the message should be concise, self-explanatory, clearly visible (maybe some nice red highlighted text), and you should avoid including redundant statements. For example if you utilize applocker (properly configured) with macros disabled on office or maybe an endpoint sandbox solution, then you probably don't care much whether users click links/download files/execute attachments.
 		> Note: You may want to check with your legal/marketing departments on modifying received emails. Another consideration is the validity of digital signatures, especially after changing email body.
 	 - Awareness training on what that prepended message means
 	 > In most of the situations, before the user falls into the phishing trap, there is a moment of doubt/confusion created by the contents of the email (e.g. asking the user to do something unusual). You want your users in that exact moment, to have clear instructions on how they should react. They should create a connection that when in doubt+that red annoying line at the beginning of the email=notify security (ingredient [5] should help with forging that equation into their minds)
@@ -18,7 +18,7 @@ We will need:
 	 - Experimental, but could still have some great results, is to transfer the concept above in the web gateway. One way to accomplish this is by configuring the web gateway to add a [red frame](https://imgur.com/a/M17pf1y) for example (inject html) in every external website. Then you can easily prevent credential theft by some basic awareness training on what that red frame means.
 	 > The catch here is that the injection code should work reliably most of the time and this is not a trivial thing without native support from browsers.
  2. Φishing bait: catches specific types of φish(ing)
-	 - Proactively blacklist potential phishing domains on email/web gateway ([dnstwist](https://github.com/elceef/dnstwist) is a good start)
+	 - Proactively blacklist potential phishing domains (i.e. domains "similar" with yours) on email/web gateway ([dnstwist](https://github.com/elceef/dnstwist) is a good start)
 	 - Set up an alert when the above rule is triggered, you may have some "sophisticated" attackers (or red-teamers) coming your way.
  3. Anti-anti-φishing bait: detects the attempt of getting around the φishing bait
 	 - Configure the email clients to display internationalized domain names in emails with their punycode representation.
@@ -32,7 +32,7 @@ We will need:
             - Enrich email gateway logs to include a field with the urls found in the emails.
             > It should be easy to deploy, and it will probably be available out of the box in case url reputation check is enabled on email gw.
 		 - Synchronously: 
-			- Specifically for Windows, monitor the [process creation event](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=4688). When a link from an email is clicked, a new process of the default internet browser will be created and the url will be passed as an argument.
+			- Specifically for Windows, monitor the [process creation event](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=4688). When a link from an email is clicked, a new process of the default internet browser is created and the url is passed as an argument to that process.
             > Ok, almost synchronous, but to the point that allow us to reap most of the benefits of synchronous monitoring.
             > 
             > It should be noted that the process creation event logging is disabled by default as well as the logging of command line arguments. Both should be enabled to have this going. One limitation is that the parent process image is not included in the logs (just its pid), so it would be hard to tell for example when a link was clicked through outlook. 
