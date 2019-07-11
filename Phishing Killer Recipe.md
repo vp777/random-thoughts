@@ -15,7 +15,7 @@ We will need:
 	 > In most of the situations, before the user falls into the phishing trap, there is a moment of doubt/confusion created by the contents of the email (e.g. asking the user to do something unusual). You want your users in that exact moment, to have clear instructions on how they should react. They should create a connection that when in doubt+that red annoying line at the beginning of the email=notify security (ingredient [5] should help with forging that equation into their minds)
 	 > 
 	 > Note: The only issue here is that some people get disturbed by the brutality of killing φish this way.
-	 - Experimental, but could still have some great results, is to transfer the concept above in the web gateway. One way to accomplish this is by configuring the web gateway to add a [red frame](https://imgur.com/a/M17pf1y) for example (inject html) in every external website. Then you can easily prevent credential theft by some basic awareness training on what that red frame means.
+	 - Bonus: Another interesting approach is to transfer the concept discussed above on the web gateway. One way to accomplish this is by configuring the web gateway to add a [red frame](https://imgur.com/a/M17pf1y) for example (inject html) in every external website. Then you can easily prevent credential theft by some basic awareness training on what that red frame means.
 	 > The catch here is that the injection code should work reliably most of the time and this is not a trivial thing without native support from browsers.
  2. Φishing bait: catches specific types of φish(ing)
 	 - Proactively blacklist potential phishing domains (i.e. domains "similar" with yours) on email/web gateway ([dnstwist](https://github.com/elceef/dnstwist) is a good start)
